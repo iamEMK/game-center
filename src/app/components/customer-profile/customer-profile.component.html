@@ -1,0 +1,13 @@
+<mat-card *ngIf="customer()">
+    <mat-card-title>{{ customer()?.name }}'s Profile</mat-card-title>
+    <p>Subscription: {{ customer()?.subscription }}</p>
+    <p>Total Spent: {{ customer()?.totalSpent }} INR</p>
+    <p>Loyalty Points: {{ customer()?.loyaltyPoints }}</p>
+    <p>Discount: {{ (customer()?.additionalDiscount || 0) * 100 }}%</p>
+    <mat-list>
+      <mat-list-item *ngFor="let session of sessions()">
+        {{session}}
+        <!-- {{ getConsole(session.consoleId)?.name }} - {{ session.cost }} INR ({{ session.status }}) -->
+      </mat-list-item>
+    </mat-list>
+  </mat-card>

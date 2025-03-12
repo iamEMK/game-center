@@ -1,0 +1,18 @@
+<mat-toolbar>Session Tracker</mat-toolbar>
+<mat-grid-list cols="3" rowHeight="100px">
+  <mat-grid-tile *ngFor="let console of consoles()">
+    <mat-card [style.background]="console.status === 'occupied' ? '#ffcccc' : '#ccffcc'">
+      {{ console.name }} ({{ console.zone }}) - {{ console.status }}
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+<div *ngFor="let session of activeSessions()">
+  <mat-card>
+    <p>Console: {{ getConsole(session.consoleId)?.name }}</p>
+    <p>Players: {{ session.playerQty }}</p>
+    <p>Duration: {{ session.duration | number:'1.0-0' }} mins</p>
+    <p>Cost: {{ session.runningCost }} INR</p>
+    <button mat-raised-button color="warn" (click)="stopSession(session)">Stop</button>
+    <button mat-raised-button color="primary" (click)="addOrder(session.id)">Add Order</button>
+  </mat-card>
+</div>

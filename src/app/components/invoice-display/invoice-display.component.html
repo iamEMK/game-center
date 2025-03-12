@@ -1,0 +1,11 @@
+<mat-card *ngIf="session()">
+    <mat-card-title>Invoice</mat-card-title>
+    <p>Console: {{ console()?.name }}</p>
+    <p>Players: {{ session()?.playerQty }}</p>
+    <p>Duration: {{ ((session()!.endTime! - session()!.startTime) / 60000) | number:'1.0-0' }} mins</p>
+    <p>Session Cost: {{ session()?.cost }} INR</p>
+    <p *ngFor="let order of orders()">{{ order.item }}: {{ order.cost }} INR ({{ order.status }})</p>
+    <p *ngFor="let customer of customers()">Customer: {{ customer.name }} ({{ customer.additionalDiscount * 100 }}% off)</p>
+    <p>Total: {{ getTotalCost() }} INR</p>
+    <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
+  </mat-card>

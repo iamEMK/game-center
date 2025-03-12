@@ -1,0 +1,31 @@
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Console</mat-label>
+      <mat-select formControlName="consoleId">
+        <mat-option *ngFor="let console of availableConsoles()" [value]="console.id">
+          {{ console.name }} ({{ console.zone }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Number of Players</mat-label>
+      <input matInput type="number" formControlName="playerQty" min="1" max="4">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Start Time</mat-label>
+      <input matInput type="datetime-local" formControlName="startTime">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Customer Name (Optional)</mat-label>
+      <input matInput formControlName="customerName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Subscription</mat-label>
+      <mat-select formControlName="subscription">
+        <mat-option value="none">None</mat-option>
+        <mat-option value="basic">Basic</mat-option>
+        <mat-option value="premium">Premium (10% off)</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">Book</button>
+  </form>
