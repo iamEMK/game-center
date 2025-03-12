@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
@@ -7,18 +7,20 @@ import { CommonModule } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Customer } from '../../models/customer.model';
 import { Session } from '../../models/session.model';
+
 @Component({
-    
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule ],
+  standalone: true,
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html'
 })
 export class BookingFormComponent {
-  // private firebaseService = inject(FirebaseService)
+  bookingForm: FormGroup;
+  availableConsoles = computed(() => this.firebaseService.consoles().filter(c => c.status === 'free')); // Computed signal
 
   constructor(
-    private firebaseService : FirebaseService, 
     private fb: FormBuilder,
+    private firebaseService: FirebaseService,
     private router: Router
   ) {
     this.bookingForm = this.fb.group({
@@ -28,14 +30,7 @@ export class BookingFormComponent {
       customerName: [''],
       subscription: ['none']
     });
-  this.availableConsoles = this.firebaseService.consoles;
-  this.customers  = this.firebaseService.customers;
-
-
   }
-  bookingForm: FormGroup;
-  availableConsoles : any = '' 
-  customers : any = '' 
 
   async onSubmit() {
     if (this.bookingForm.valid) {
