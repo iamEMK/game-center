@@ -7,11 +7,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
+import {MatTimepickerModule} from '@angular/material/timepicker'
+import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   exports: [
-    MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, MatToolbarModule, MatGridListModule, MatListModule
+    MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,MatAutocompleteModule,MatOptionModule,
+    MatSelectModule, MatToolbarModule, MatGridListModule, MatListModule , MatTimepickerModule, MatDialogModule,MatTableModule
   ]
 })
 export class MaterialModule {}

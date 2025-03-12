@@ -5,6 +5,9 @@ import { InvoiceDisplayComponent } from './components/invoice-display/invoice-di
 import { OrderFormComponent } from './components/order-form/order-form.component';
 import { AnalyticsDashboardComponent } from './components/analytics-dashboard/analytics-dashboard.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
+import { ConsoleCustomerFormComponent } from './components/console-customer-form/console-customer-form.component';
+import { SalesReportComponent } from './components/sales-report/sales-report.component';
+import { CustomerListComponent } from './components/customer-list/customer-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/booking', pathMatch: 'full' },
@@ -13,5 +16,8 @@ export const routes: Routes = [
   { path: 'invoice/:sessionId', component: InvoiceDisplayComponent },
   { path: 'order/:sessionId', component: OrderFormComponent },
   { path: 'analytics', component: AnalyticsDashboardComponent },
-  { path: 'profile/:customerId', component: CustomerProfileComponent }
+  { path: 'profile/:customerId', component: CustomerProfileComponent },
+  { path: 'create', component: ConsoleCustomerFormComponent }, // New route
+  { path: 'report', component: SalesReportComponent },
+  { path: 'customers', component: CustomerListComponent }
 ];

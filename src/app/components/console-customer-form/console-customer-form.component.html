@@ -1,0 +1,36 @@
+<mat-card>
+    <mat-card-title>Create New Console</mat-card-title>
+    <form [formGroup]="consoleForm" (ngSubmit)="onConsoleSubmit()">
+      <mat-form-field>
+        <mat-label>Console Name</mat-label>
+        <input matInput formControlName="name" placeholder="e.g., PS5 #3">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Zone</mat-label>
+        <mat-select formControlName="zone">
+          <mat-option value="standard">Standard</mat-option>
+          <mat-option value="VIP">VIP</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="consoleForm.invalid">Add Console</button>
+    </form>
+  </mat-card>
+  
+  <mat-card>
+    <mat-card-title>Create New Customer</mat-card-title>
+    <form [formGroup]="customerForm" (ngSubmit)="onCustomerSubmit()">
+      <mat-form-field>
+        <mat-label>Customer Name</mat-label>
+        <input matInput formControlName="name" placeholder="e.g., John Doe">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Subscription</mat-label>
+        <mat-select formControlName="subscription">
+          <mat-option value="none">None</mat-option>
+          <mat-option value="basic">Basic</mat-option>
+          <mat-option value="premium">Premium (10% off)</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="customerForm.invalid">Add Customer</button>
+    </form>
+  </mat-card>

@@ -17,6 +17,7 @@ import { Session } from '../../models/session.model';
 export class BookingFormComponent {
   bookingForm: FormGroup;
   availableConsoles = computed(() => this.firebaseService.consoles().filter(c => c.status === 'free')); // Computed signal
+  customers = computed(() => this.firebaseService.customers()); // Computed signal
 
   constructor(
     private fb: FormBuilder,
@@ -26,12 +27,17 @@ export class BookingFormComponent {
     this.bookingForm = this.fb.group({
       consoleId: ['', Validators.required],
       playerQty: [1, [Validators.min(1), Validators.max(4)]],
-      startTime: [new Date().toISOString(), Validators.required],
+      startTime: [new Date(), Validators.required],
       customerName: [''],
       subscription: ['none']
     });
   }
-
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    const d = this.firebaseService.consoles()
+    console.log(d);
+  }
   async onSubmit() {
     if (this.bookingForm.valid) {
       let customerId = 'default-' + uuidv4();

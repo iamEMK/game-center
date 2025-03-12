@@ -29,6 +29,9 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
       <button mat-button routerLink="/tracker">Track</button>
       <button mat-button routerLink="/analytics">Analytics</button>
       <button mat-button routerLink="/profile/default-uuid">Profile</button>
+      <button mat-button routerLink="/create">Create</button>
+      <button mat-button routerLink="/report">Report</button>
+      <button mat-button routerLink="/customers">Customers</button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   `

@@ -33,10 +33,12 @@ import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FirebaseService } from './services/firebase.service';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    provideNativeDateAdapter(),
     // Initialize Firebase app with your config
     provideFirebaseApp(() => initializeApp({
       projectId: 'emk-game-center',

@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-title>All Customers</mat-card-title>
+    
+    <div class="controls">
+      <mat-form-field>
+        <mat-label>Filter by Name</mat-label>
+        <input matInput (input)="applyFilter($event)" placeholder="Search customers...">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="openAddCustomerDialog()">Add Customer</button>
+    </div>
+  
+    <table mat-table [dataSource]="filteredCustomers()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('name')">Name {{ sortField() === 'name' ? (sortDirection() === 'asc' ? '↑' : '↓') : '' }}</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="subscription">
+        <th mat-header-cell *matHeaderCellDef>Subscription</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.subscription }}</td>
+      </ng-container>
+      <ng-container matColumnDef="totalSpent">
+        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('totalSpent')">Total Spent {{ sortField() === 'totalSpent' ? (sortDirection() === 'asc' ? '↑' : '↓') : '' }}</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.totalSpent }} INR</td>
+      </ng-container>
+      <ng-container matColumnDef="loyaltyPoints">
+        <th mat-header-cell *matHeaderCellDef>Loyalty Points</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.loyaltyPoints }}</td>
+      </ng-container>
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>Discount</th>
+        <td mat-cell *matCellDef="let customer">{{ (customer.additionalDiscount || 0) * 100 }}%</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <div class="pagination">
+      <button mat-button [disabled]="currentPage() === 0" (click)="prevPage()">Previous</button>
+      <span>Page {{ currentPage() + 1 }}</span>
+      <button mat-button [disabled]="!lastDoc" (click)="nextPage()">Next</button>
+    </div>
+  </mat-card>

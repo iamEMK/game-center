@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-title>Sales Report</mat-card-title>
+    <form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>From Date</mat-label>
+        <input matInput type="date" formControlName="fromDate">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>To Date</mat-label>
+        <input matInput type="date" formControlName="toDate">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Generate Report</button>
+      <button mat-raised-button color="accent" (click)="exportToPDF()" *ngIf="reportData()">Export to PDF </button>
+    </form>
+  
+    <div *ngIf="reportData()">
+      <h3>Total Earnings: {{ reportData()!.totalEarnings }} INR</h3>
+      <h4>Sessions: {{ reportData()!.sessions.length }} </h4>
+      <ngx-charts-bar-vertical [results]="chartData()" [xAxis]="true" [yAxis]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" xAxisLabel="Date" yAxisLabel="Earnings (INR)"></ngx-charts-bar-vertical>
+      <mat-list>
+        <mat-list-item *ngFor="let session of reportData()!.sessions">
+          <span>Console: {{ getConsoleName(session.consoleId) }}</span>
+          <span>Players: {{ session.playerQty }}</span>
+          <span>Duration: {{ getDuration(session) | number:'1.0-0' }} mins</span>
+          <span>Cost: {{ session.cost }} INR</span> 
+          <span>Customers: {{ getCustomerNames(session.customerIds) }}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-card>
