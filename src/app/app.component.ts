@@ -32,6 +32,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
       <button mat-button routerLink="/create">Create</button>
       <button mat-button routerLink="/report">Report</button>
       <button mat-button routerLink="/customers">Customers</button>
+      <button mat-button routerLink="/pending-payments">Pending Payments</button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   `

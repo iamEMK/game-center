@@ -29,9 +29,9 @@
                matInput
                formControlName="customerName"
                [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           @for (option of customers() ; track option) {
-            <mat-option [value]="option.name">{{option.name}}</mat-option>
+            <mat-option [value]="option">{{option.name}}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>

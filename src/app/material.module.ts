@@ -12,10 +12,11 @@ import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/cor
 import { MatTableModule } from '@angular/material/table';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   exports: [
-    MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,MatAutocompleteModule,MatOptionModule,
+    MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,MatAutocompleteModule,MatOptionModule, MatCheckboxModule,
     MatSelectModule, MatToolbarModule, MatGridListModule, MatListModule , MatTimepickerModule, MatDialogModule,MatTableModule
   ]
 })

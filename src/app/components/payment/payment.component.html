@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Payment for Session</h2>
+<mat-dialog-content>
+  <form [formGroup]="paymentForm">
+    <p>Total Amount: {{ totalAmount }} INR</p>
+    <p>Discount Applied: {{ discountApplied() * 100 }}%</p>
+    <p>New Loyalty Points Earned: {{ newLoyaltyPointsEarned() }}</p>
+
+    <mat-form-field>
+      <mat-label>Payment Method</mat-label>
+      <mat-select formControlName="paymentMethod">
+        <mat-option value="CASH">Cash</mat-option>
+        <mat-option value="CARD">Card</mat-option>
+        <mat-option value="UPI">UPI</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="paymentForm.value.paymentMethod !== 'CASH'">
+      <mat-form-field>
+        <mat-label>Transaction ID</mat-label>
+        <input matInput formControlName="transactionId" placeholder="e.g., TXN12345">
+      </mat-form-field>
+    </div>
+
+    <mat-checkbox formControlName="useLoyaltyPoints" (change)="onUseLoyaltyPointsChange()">Use Loyalty Points</mat-checkbox>
+    <div *ngIf="paymentForm.value.useLoyaltyPoints">
+      <p>Total Available Points: {{ getTotalLoyaltyPoints() }}</p>
+      <mat-form-field>
+        <mat-label>Points to Use</mat-label>
+        <input matInput type="number" [value]="loyaltyPointsUsed()" (input)="onLoyaltyPointsChange($event)" min="0" [max]="getTotalLoyaltyPoints()">
+      </mat-form-field>
+    </div>
+
+    <p>Payable Amount: {{ payableAmount() }} INR</p>
+  </form>
+  <p class="warning">Closing without payment will mark this as pending.</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+  <button mat-raised-button color="primary" (click)="onPay()" [disabled]="paymentForm.invalid">Pay</button>
+</mat-dialog-actions>

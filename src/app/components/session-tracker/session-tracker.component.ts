@@ -1,9 +1,11 @@
-import { Component, signal, effect, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 import { interval } from 'rxjs';
 import { MaterialModule } from '../../material.module';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentComponent } from '../payment/payment.component';
 import { Session } from '../../models/session.model';
 
 @Component({
@@ -13,20 +15,20 @@ import { Session } from '../../models/session.model';
   templateUrl: './session-tracker.component.html'
 })
 export class SessionTrackerComponent {
-  private firebaseService = inject(FirebaseService)
-
-  activeSessions = signal<(Session & { duration?: number; runningCost?: number })[]>([]);
+  private firebaseService =  inject(FirebaseService)
+  activeSessions = computed(() => 
+    this.firebaseService.sessions()
+      .filter(s => s.status === 'active')
+      .map(s => this.calculateCost(s))
+  );
   consoles = this.firebaseService.consoles;
 
-  constructor(private router: Router) {
-    effect(() => {
-      const sessions = this.firebaseService.sessions();
-      this.activeSessions.set(sessions.filter(s => s.status === 'active').map(s => this.calculateCost(s)));
-    });
-
-    interval(1000).subscribe(() => {
-      this.activeSessions.update(sessions => sessions.map(s => this.calculateCost(s)));
-    });
+  constructor(
+  
+    private router: Router,
+    private dialog: MatDialog
+  ) {
+    interval(1000).subscribe(() => this.activeSessions());
   }
 
   calculateCost(session: Session) {
@@ -46,10 +48,37 @@ export class SessionTrackerComponent {
   }
 
   stopSession(session: Session) {
-    const updatedSession:Session = { ...session, endTime: Date.now(), status: 'completed', cost: this.calculateCost(session).runningCost! };
-    this.firebaseService.updateSession(session.id!, updatedSession).then(() => {
-      this.firebaseService.updateConsoleStatus(session.consoleId, 'free');
-      this.router.navigate(['/invoice', session.id]);
+    const updatedSession: Session = { 
+      ...session, 
+      endTime: Date.now(), 
+      paymentStatus: 'PENDING',
+      status: 'completed', // Mark as completed but payment pending
+      cost: this.calculateCost(session).runningCost!
+    };
+
+    // Free the console immediately and update session
+    Promise.all([
+      this.firebaseService.updateSession(session.id!, updatedSession),
+      this.firebaseService.updateConsoleStatus(session.consoleId, 'free')
+    ]).then(() => {
+      // Open payment dialog after freeing console
+      this.openPaymentDialog(updatedSession);
+    }).catch(error => {
+      console.error('Error stopping session:', error);
+    });
+  }
+
+  openPaymentDialog(session: Session) {
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      width: '500px',
+      data: session
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.paymentStatus === 'COMPLETED') {
+        this.router.navigate(['/invoice', session.id]); // Navigate to invoice only if paid
+      }
+      // If closed without payment, no navigation (pending payment)
     });
   }
 

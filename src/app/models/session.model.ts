@@ -7,4 +7,5 @@ export interface Session {
     status: 'active' | 'completed';
     customerIds: string[]; // Array of customer IDs
     playerQty: number; // Total players
+    paymentStatus?: 'PENDING' | 'PAID';
   }

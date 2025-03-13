@@ -38,28 +38,31 @@ export class BookingFormComponent {
     const d = this.firebaseService.consoles()
     console.log(d);
   }
+  displayFn(customer: Customer): string {
+    return customer && customer.name;
+  }
   async onSubmit() {
     if (this.bookingForm.valid) {
       let customerId = 'default-' + uuidv4();
-      if (this.bookingForm.value.customerName) {
-        const newCustomer: Customer = {
-          id: uuidv4(),
-          name: this.bookingForm.value.customerName,
-          subscription: this.bookingForm.value.subscription,
-          totalSpent: 0,
-          loyaltyPoints: 0,
-          additionalDiscount: this.bookingForm.value.subscription === 'premium' ? 0.1 : 0
-        };
-        await this.firebaseService.createCustomer(newCustomer);
-        customerId = newCustomer.id;
-      }
+      // if (this.bookingForm.value.customerName) {
+      //   const newCustomer: Customer = {
+      //     id: uuidv4(),
+      //     name: this.bookingForm.value.customerName,
+      //     subscription: this.bookingForm.value.subscription,
+      //     totalSpent: 0,
+      //     loyaltyPoints: 0,
+      //     additionalDiscount: this.bookingForm.value.subscription === 'premium' ? 0.1 : 0
+      //   };
+      //   await this.firebaseService.createCustomer(newCustomer);
+      //   customerId = newCustomer.id;
+      // }
 
       const session : Session = {
         consoleId: this.bookingForm.value.consoleId,
         startTime: new Date(this.bookingForm.value.startTime).getTime(),
         cost: 0,
         status: 'active',
-        customerIds: [customerId],
+        customerIds: [this.bookingForm.value.customerName.id || customerId],
         playerQty: this.bookingForm.value.playerQty
       };
       this.firebaseService.createSession(session).then(() => {

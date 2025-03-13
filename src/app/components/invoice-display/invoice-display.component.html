@@ -1,4 +1,4 @@
-<mat-card *ngIf="session()">
+<!-- <mat-card *ngIf="session()">
     <mat-card-title>Invoice</mat-card-title>
     <p>Console: {{ console()?.name }}</p>
     <p>Players: {{ session()?.playerQty }}</p>
@@ -8,4 +8,21 @@
     <p *ngFor="let customer of customers()">Customer: {{ customer.name }} ({{ customer.additionalDiscount * 100 }}% off)</p>
     <p>Total: {{ getTotalCost() }} INR</p>
     <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
+  </mat-card> -->
+  <mat-card *ngIf="invoice()">
+    <mat-card-title>Invoice #{{ invoice()!.id }}</mat-card-title>
+    <p>Console: {{ console()?.name }}</p>
+    <p>Customers: {{ customers() }}</p>
+    <!-- <p>Customers: {{ customers().map(c => c.name).join(', ') }}</p> -->
+    <p>Players: {{ session()?.playerQty }}</p>
+    <p>Duration: {{ ((session()!.endTime! - session()!.startTime) / 60000) | number:'1.0-0' }} mins</p>
+    <p>Session Cost: {{ invoice()!.totalAmount }} INR</p>
+    <p *ngFor="let order of orders()">{{ order.item }}: {{ order.cost }} INR ({{ order.status }})</p>
+    <p>Discount: {{ invoice()!.discountApplied * 100 }}%</p>
+    <p>Loyalty Points Used: {{ invoice()!.loyaltyPointsUsed }}</p>
+    <p>Payable Amount: {{ invoice()!.payableAmount }} INR</p>
+    <p>Payment Method: {{ invoice()!.paymentMethod }}</p>
+    <p *ngIf="invoice()!.transactionId">Transaction ID: {{ invoice()!.transactionId }}</p>
+    <button mat-raised-button color="primary" (click)="downloadPDF()">Download PDF</button>
   </mat-card>
+  

@@ -1,0 +1,16 @@
+<mat-card>
+    <mat-card-title>Pending Payments</mat-card-title>
+    <mat-list>
+      <mat-list-item *ngFor="let session of pendingSessions()">
+        <span>Console: {{ getConsoleName(session.consoleId) }}</span>
+        <span>Players: {{ session.playerQty }}</span>
+        <span>Duration: {{ getDuration(session) | number:'1.0-0' }} mins</span>
+        <span>Amount: {{ session.cost }} INR</span>
+        <span>Customers: {{ getCustomerNames(session.customerIds) }}</span>
+        <button mat-raised-button color="primary" (click)="paySession(session)">Pay Now</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="pendingSessions().length === 0">
+        No pending payments.
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
